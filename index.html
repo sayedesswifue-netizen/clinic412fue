@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Chrome UI (hover devices only): credit badge with idle-fade.
+    // Deferred until body exists since the script may run in <head>.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChromeUI);
+    } else {
+        initChromeUI();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js" integrity="sha384-XcdcwHqIPULERb2yDEM4R0XaQKU3YnDsrTmjACBZyfdVVqjh6xQ4/DCMd7XLcA6Y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinic 412 CMMS Pro | نظام إدارة الصيانة المتكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:oklch(97% 0.004 260);--surface:oklch(99.5% 0.002 260);--surface-alt:oklch(95% 0.006 260);--border:oklch(90% 0.008 260);--border-subtle:oklch(93% 0.005 260);--text-primary:oklch(15% 0.015 260);--text-secondary:oklch(38% 0.012 260);--text-tertiary:oklch(55% 0.008 260);--text-muted:oklch(65% 0.006 260);--primary:oklch(45% 0.2 265);--primary-hover:oklch(40% 0.22 265);--primary-light:oklch(92% 0.04 265);--primary-subtle:oklch(96% 0.02 265);--accent:oklch(55% 0.22 310);--success:oklch(50% 0.15 155);--success-light:oklch(94% 0.035 155);--warning:oklch(60% 0.17 80);--warning-light:oklch(94% 0.04 80);--danger:oklch(50% 0.2 27);--danger-light:oklch(94% 0.04 27);--info:oklch(50% 0.13 235);--info-light:oklch(94% 0.03 235);--sidebar-bg:oklch(14% 0.03 260);--sidebar-hover:oklch(20% 0.035 260);--sidebar-active:oklch(24% 0.04 265);--sidebar-text:oklch(72% 0.012 260);--sidebar-text-active:oklch(92% 0.005 260);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--radius-xl:18px;--shadow-sm:0 2px 6px oklch(0% 0 0/0.05);--shadow-md:0 4px 16px oklch(0% 0 0/0.07);--shadow-lg:0 8px 32px oklch(0% 0 0/0.1);--ease-out:cubic-bezier(0.22,1,0.36,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',system-ui,sans-serif;background:var(--bg);color:var(--text-primary);font-size:14px;line-height:1.65;min-height:100vh;display:flex;font-feature-settings:'tnum' 1;-webkit-font-smoothing:antialiased}
+.sidebar{position:fixed;right:0;top:0;bottom:0;width:260px;background:var(--sidebar-bg);display:flex;flex-direction:column;z-index:100;overflow-y:auto;border-left:1px solid oklch(20% 0.02 260)}
+.sidebar-brand{padding:24px 20px 20px;display:flex;align-items:center;gap:12px}
+.brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-text h1{font-size:0.9rem;font-weight:700;color:var(--sidebar-text-active);line-height:1.3}
+.brand-text p{font-size:0.65rem;color:var(--sidebar-text);opacity:0.6}
+.sidebar-nav{padding:8px 10px;flex:1}
+.nav-group{margin-bottom:6px}
+.nav-group-label{font-size:0.6rem;font-weight:700;color:oklch(45% 0.01 260);text-transform:uppercase;letter-spacing:0.1em;padding:12px 12px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);color:var(--sidebar-text);cursor:pointer;transition:all 180ms var(--ease-out);font-size:0.8rem;font-weight:500;margin-bottom:1px;position:relative}
+.nav-item:hover{background:var(--sidebar-hover);color:oklch(85% 0.01 260)}
+.nav-item.active{background:var(--sidebar-active);color:var(--sidebar-text-active);font-weight:600}
+.nav-item i{width:17px;height:17px;opacity:0.7;flex-shrink:0}
+.nav-item.active i{opacity:1}
+.nav-badge{margin-right:auto;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;background:var(--danger);color:oklch(98% 0 0);font-size:0.6rem;font-weight:700;border-radius:9px;padding:0 5px}
+.sidebar-user{padding:14px 18px;border-top:1px solid oklch(22% 0.02 260);display:flex;align-items:center;gap:10px}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:oklch(98% 0 0)}
+.user-info .user-name{font-size:0.75rem;font-weight:600;color:oklch(85% 0.01 260)}
+.user-info .user-role{font-size:0.62rem;color:oklch(50% 0.01 260)}
+.main{margin-right:260px;flex:1;min-height:100vh;padding:24px 28px}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}
+.page-header h2{font-size:1.3rem;font-weight:800;color:var(--text-primary)}
+.page-header .subtitle{font-size:0.78rem;color:var(--text-tertiary);margin-top:2px}
+.header-actions{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius-sm);font-size:0.78rem;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all 150ms var(--ease-out);white-space:nowrap}
+.btn-primary{background:var(--primary);color:oklch(98% 0 0)}
+.btn-primary:hover{background:var(--primary-hover);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--text-primary);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surface-alt)}
+.btn-sm{padding:4px 9px;font-size:0.7rem}
+.btn-danger{background:var(--danger);color:oklch(98% 0 0)}
+.btn i{width:14px;height:14px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);padding:16px 18px;border-radius:var(--radius-md);border:1px solid var(--border-subtle)}
+.kpi-label{font-size:0.68rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:5px}
+.kpi-value{font-size:1.6rem;font-weight:800;line-height:1.1}
+.kpi-sub{font-size:0.68rem;color:var(--text-tertiary);margin-top:3px}
+.kpi.c-primary .kpi-value{color:var(--primary)}
+.kpi.c-success .kpi-value{color:var(--success)}
+.kpi.c-warning .kpi-value{color:var(--warning)}
+.kpi.c-danger .kpi-value{color:var(--danger)}
+.kpi.c-info .kpi-value{color:var(--info)}
+.panel{background:var(--surface);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:18px}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border-subtle)}
+.panel-header h3{font-size:0.85rem;font-weight:700}
+.panel-body{padding:18px}
+.panel-body.flush{padding:0}
+table{width:100%;border-collapse:collapse}
+thead th{font-size:0.66rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;padding:9px 12px;text-align:right;background:var(--surface-alt);border-bottom:1px solid var(--border-subtle)}
+tbody td{padding:10px 12px;font-size:0.78rem;border-bottom:1px solid var(--border-subtle)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:oklch(97% 0.003 260)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:0.66rem;font-weight:600}
+.badge-dot{width:5px;height:5px;border-radius:50%}
+.b-open{background:var(--danger-light);color:oklch(38% 0.16 27)}.b-open .badge-dot{background:var(--danger)}
+.b-progress{background:var(--info-light);color:oklch(35% 0.1 235)}.b-progress .badge-dot{background:var(--info)}
+.b-closed{background:var(--success-light);color:oklch(35% 0.12 155)}.b-closed .badge-dot{background:var(--success)}
+.b-critical{background:oklch(92% 0.05 27);color:oklch(38% 0.18 27)}
+.b-high{background:oklch(93% 0.04 50);color:oklch(40% 0.14 50)}
+.b-medium{background:var(--warning-light);color:oklch(40% 0.12 80)}
+.b-low{background:var(--primary-light);color:var(--primary)}
+.b-ok{background:var(--success-light);color:oklch(35% 0.12 155)}
+.b-due{background:var(--warning-light);color:oklch(40% 0.12 80)}
+.b-overdue{background:var(--danger-light);color:oklch(38% 0.16 27)}
+.b-active{background:var(--success-light);color:oklch(35% 0.12 155)}
+.b-stock{background:var(--success-light);color:oklch(35% 0.12 155)}
+.b-reorder{background:var(--warning-light);color:oklch(40% 0.12 80)}
+.b-out{background:var(--danger-light);color:oklch(38% 0.16 27)}
+.b-pending{background:oklch(94% 0.03 60);color:oklch(40% 0.12 60)}
+.b-ordered{background:var(--info-light);color:oklch(35% 0.1 235)}
+.b-delivered{background:var(--success-light);color:oklch(35% 0.12 155)}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.chart-panel{background:var(--surface);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:18px}
+.chart-panel h4{font-size:0.8rem;font-weight:700;margin-bottom:12px;color:var(--text-secondary)}
+.chart-panel canvas{width:100%!important;height:180px!important}
+.module{display:none;animation:moduleIn 250ms var(--ease-out)}
+.module.active{display:block}
+@keyframes moduleIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:0.72rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px}
+.form-group .req{color:var(--danger)}
+.form-group small{font-size:0.65rem;color:var(--text-tertiary);display:block;margin-top:3px}
+.form-control{width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:0.8rem;background:var(--surface);color:var(--text-primary);transition:border-color 150ms,box-shadow 150ms}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px oklch(45% 0.2 265/0.08)}
+textarea.form-control{min-height:70px;resize:vertical}
+.report-hero{background:linear-gradient(135deg,oklch(20% 0.04 265),oklch(14% 0.03 260));border-radius:var(--radius-xl);padding:28px;margin-bottom:18px;color:oklch(92% 0.01 260);display:flex;align-items:center;justify-content:space-between}
+.report-hero h3{font-size:1.2rem;font-weight:800;margin-bottom:3px}
+.report-hero p{font-size:0.78rem;opacity:0.7}
+.report-hero .hero-stats{display:flex;gap:28px}
+.report-hero .hero-stat{text-align:center}
+.report-hero .hero-stat .val{font-size:1.8rem;font-weight:900}
+.report-hero .hero-stat .lbl{font-size:0.65rem;opacity:0.6;text-transform:uppercase}
+.report-filters{display:flex;gap:10px;align-items:end;background:var(--surface);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px}
+.report-filters .form-group{margin:0;flex:1}
+.modal-overlay{display:none;position:fixed;inset:0;background:oklch(0% 0 0/0.45);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius-xl);width:100%;max-width:620px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border-subtle)}
+.modal-head h3{font-size:1rem;font-weight:700}
+.modal-head .close-btn{background:none;border:none;cursor:pointer;color:var(--text-tertiary);padding:4px;font-size:1.1rem}
+.modal-body{padding:22px}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--border-subtle);display:flex;gap:8px}
+.qr-scanner-zone{border:2px dashed var(--border);border-radius:var(--radius-lg);padding:36px 20px;text-align:center;cursor:pointer;transition:all 200ms var(--ease-out);background:var(--surface-alt)}
+.qr-scanner-zone:hover{border-color:var(--primary);background:var(--primary-subtle)}
+.qr-scanner-zone .scan-icon{width:52px;height:52px;margin:0 auto 12px;background:var(--primary-light);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.qr-scanner-zone .scan-icon i{width:26px;height:26px;color:var(--primary)}
+.qr-scanner-zone h4{font-size:0.9rem;font-weight:700;margin-bottom:3px}
+.qr-scanner-zone p{font-size:0.75rem;color:var(--text-tertiary)}
+.qr-video-container{display:none;max-width:340px;margin:0 auto;border-radius:var(--radius-md);overflow:hidden}
+.qr-video-container video{width:100%;height:260px;object-fit:cover}
+.asset-detected{display:none;background:var(--success-light);border:1.5px solid oklch(80% 0.06 155);border-radius:var(--radius-md);padding:14px 18px;margin-top:12px;text-align:right}
+.asset-detected.show{display:flex;align-items:center;gap:12px}
+.asset-detected .check-icon{width:38px;height:38px;flex-shrink:0;background:var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.asset-detected .check-icon i{width:18px;height:18px;color:oklch(98% 0 0)}
+.asset-detected .det-info h5{font-size:0.82rem;font-weight:700;color:oklch(25% 0.08 155)}
+.asset-detected .det-info p{font-size:0.72rem;color:oklch(35% 0.06 155)}
+.stepper{display:flex;align-items:center;margin-bottom:22px}
+.step-item{display:flex;align-items:center;gap:8px;flex:1}
+.step-num{width:26px;height:26px;border-radius:50%;font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;background:var(--surface-alt);color:var(--text-tertiary);border:2px solid var(--border)}
+.step-item.active .step-num{background:var(--primary);color:oklch(98% 0 0);border-color:var(--primary)}
+.step-item.done .step-num{background:var(--success);color:oklch(98% 0 0);border-color:var(--success)}
+.step-label{font-size:0.7rem;font-weight:600;color:var(--text-tertiary)}
+.step-item.active .step-label{color:var(--primary)}
+.priority-row{display:flex;gap:8px}
+.prio-card{flex:1;border:2px solid var(--border);border-radius:var(--radius-md);padding:10px 8px;text-align:center;cursor:pointer;transition:all 180ms var(--ease-out);background:var(--surface)}
+.prio-card.selected.pc-critical{border-color:var(--danger);background:var(--danger-light)}
+.prio-card.selected.pc-high{border-color:oklch(55% 0.16 50);background:oklch(94% 0.04 50)}
+.prio-card.selected.pc-medium{border-color:var(--warning);background:var(--warning-light)}
+.prio-card.selected.pc-low{border-color:var(--success);background:var(--success-light)}
+.prio-card b{display:block;font-size:0.78rem}
+.prio-card small{font-size:0.62rem;color:var(--text-tertiary)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--sidebar-bg);color:oklch(92% 0.01 260);padding:12px 24px;border-radius:var(--radius-md);font-size:0.82rem;font-weight:600;box-shadow:var(--shadow-lg);z-index:400;transition:transform 300ms var(--ease-out);opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:900px){.sidebar{width:220px}.main{margin-right:220px;padding:18px}.chart-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{transform:translateX(100%);position:fixed;width:280px}.main{margin-right:0}.kpi-row{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.priority-row{flex-wrap:wrap}.prio-card{flex:1 1 45%}.report-hero{flex-direction:column;gap:16px;text-align:center}}
+@media print{.sidebar,.btn,.header-actions{display:none}.main{margin:0}}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:oklch(82% 0.008 260);border-radius:3px}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand"><div class="brand-icon">🦷</div><div class="brand-text"><h1>Clinic 412</h1><p>CMMS · نظام الصيانة المتكامل</p></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-group"><div class="nav-group-label">الرئيسية</div>
+      <div class="nav-item active" data-mod="dashboard"><i data-lucide="layout-dashboard"></i> لوحة المتابعة</div>
+      <div class="nav-item" data-mod="reports"><i data-lucide="bar-chart-2"></i> التقارير</div>
+    </div>
+    <div class="nav-group"><div class="nav-group-label">الصيانة</div>
+      <div class="nav-item" data-mod="faults"><i data-lucide="alert-triangle"></i> البلاغات <span class="nav-badge">3</span></div>
+      <div class="nav-item" data-mod="workorders"><i data-lucide="wrench"></i> أوامر العمل</div>
+      <div class="nav-item" data-mod="pm"><i data-lucide="calendar-check"></i> الوقائية</div>
+      <div class="nav-item" data-mod="qr-report"><i data-lucide="scan-line"></i> إبلاغ QR</div>
+    </div>
+    <div class="nav-group"><div class="nav-group-label">الأصول والمخزون</div>
+      <div class="nav-item" data-mod="assets"><i data-lucide="hard-drive"></i> الأصول</div>
+      <div class="nav-item" data-mod="spareparts"><i data-lucide="package"></i> قطع الغيار</div>
+      <div class="nav-item" data-mod="purchase"><i data-lucide="truck"></i> أوامر الشراء</div>
+    </div>
+    <div class="nav-group"><div class="nav-group-label">الفريق</div>
+      <div class="nav-item" data-mod="engineers"><i data-lucide="users"></i> المهندسون</div>
+      <div class="nav-item" data-mod="kpi"><i data-lucide="trophy"></i> الأداء</div>
+    </div>
+  </nav>
+  <div class="sidebar-user"><div class="user-avatar">م.ص</div><div class="user-info"><div class="user-name">م. السيد الدراوي</div><div class="user-role">مدير الصيانة</div></div></div>
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+<section class="module active" id="mod-dashboard">
+  <div class="page-header"><div><h2>لوحة المتابعة</h2><p class="subtitle">نظرة شاملة · Clinic 412</p></div><div class="header-actions"><button class="btn btn-secondary"><i data-lucide="refresh-cw"></i> تحديث</button><button class="btn btn-primary"><i data-lucide="download"></i> تصدير</button></div></div>
+  <div class="kpi-row">
+    <div class="kpi c-primary"><div class="kpi-label">الأصول</div><div class="kpi-value">43</div><div class="kpi-sub">40 كرسي · 2 أوتوكلاف · 1 أشعة</div></div>
+    <div class="kpi c-danger"><div class="kpi-label">مفتوحة</div><div class="kpi-value">3</div><div class="kpi-sub">1 طارئة · 2 عالية</div></div>
+    <div class="kpi c-warning"><div class="kpi-label">PM متأخرة</div><div class="kpi-value">5</div></div>
+    <div class="kpi c-success"><div class="kpi-label">معدل الإغلاق</div><div class="kpi-value">87%</div></div>
+    <div class="kpi c-info"><div class="kpi-label">متوسط إصلاح</div><div class="kpi-value">4.2h</div></div>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-panel"><h4>حالة البلاغات</h4><canvas id="ch-status"></canvas></div>
+    <div class="chart-panel"><h4>الصيانة الوقائية</h4><canvas id="ch-pm"></canvas></div>
+    <div class="chart-panel"><h4>أنواع الأعطال</h4><canvas id="ch-types"></canvas></div>
+    <div class="chart-panel"><h4>الاتجاه الشهري</h4><canvas id="ch-trend"></canvas></div>
+  </div>
+  <div class="panel"><div class="panel-header"><h3>أحدث البلاغات المفتوحة</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>التذكرة</th><th>الجهاز</th><th>العطل</th><th>الأولوية</th><th>المهندس</th><th>المدة</th></tr></thead><tbody>
+    <tr><td><strong>TKT-048</strong></td><td>DEN-412-DU-005</td><td>تسريب مياه</td><td><span class="badge b-critical"><span class="badge-dot"></span>طارئة</span></td><td>بانتظار التعيين</td><td>2 يوم</td></tr>
+    <tr><td><strong>TKT-047</strong></td><td>DEN-412-DU-012</td><td>ضعف الشفط</td><td><span class="badge b-high"><span class="badge-dot"></span>عالية</span></td><td>Elsayed Esswi</td><td>3 يوم</td></tr>
+    <tr><td><strong>TKT-046</strong></td><td>DEN-412-AUT-001</td><td>فشل تعقيم</td><td><span class="badge b-high"><span class="badge-dot"></span>عالية</span></td><td>Ahmed Gamal</td><td>4 يوم</td></tr>
+  </tbody></table></div></div>
+</section>
+
+<!-- REPORTS -->
+<section class="module" id="mod-reports">
+  <div class="page-header"><div><h2>التقارير والتحليلات</h2><p class="subtitle">تحليل شامل لأداء الصيانة</p></div><div class="header-actions"><button class="btn btn-secondary"><i data-lucide="printer"></i> طباعة</button><button class="btn btn-primary"><i data-lucide="download"></i> PDF</button></div></div>
+  <div class="report-hero"><div><h3>ملخص الأداء التشغيلي</h3><p>يونيو 2026 · Future University in Egypt</p></div><div class="hero-stats"><div class="hero-stat"><div class="val">48</div><div class="lbl">بلاغات</div></div><div class="hero-stat"><div class="val">94%</div><div class="lbl">إغلاق</div></div><div class="hero-stat"><div class="val">6,830</div><div class="lbl">EGP</div></div><div class="hero-stat"><div class="val">4.2h</div><div class="lbl">إصلاح</div></div></div></div>
+  <div class="report-filters"><div class="form-group"><label>من</label><input type="date" class="form-control" value="2026-06-01"></div><div class="form-group"><label>إلى</label><input type="date" class="form-control" value="2026-06-24"></div><div class="form-group"><label>الفئة</label><select class="form-control"><option>كل الفئات</option><option>كراسي</option><option>أوتوكلاف</option><option>أشعة</option></select></div><button class="btn btn-primary" style="margin-bottom:12px"><i data-lucide="refresh-cw"></i> تحديث</button></div>
+  <div class="kpi-row"><div class="kpi c-primary"><div class="kpi-label">البلاغات</div><div class="kpi-value">48</div></div><div class="kpi c-success"><div class="kpi-label">المغلقة</div><div class="kpi-value">45</div></div><div class="kpi c-danger"><div class="kpi-label">عالية/طارئة</div><div class="kpi-value">7</div></div><div class="kpi"><div class="kpi-label">التكلفة</div><div class="kpi-value">6,830</div><div class="kpi-sub">EGP</div></div></div>
+  <div class="chart-grid"><div class="chart-panel"><h4>مقارنة الفترات</h4><canvas id="ch-compare"></canvas></div><div class="chart-panel"><h4>عمر البلاغات (SLA)</h4><canvas id="ch-aging"></canvas></div><div class="chart-panel"><h4>التكلفة حسب الفئة</h4><canvas id="ch-cost-cat"></canvas></div><div class="chart-panel"><h4>أداء المهندسين</h4><canvas id="ch-eng-perf"></canvas></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="panel"><div class="panel-header"><h3>أكثر المعدات أعطالاً</h3></div><div class="panel-body flush"><table><thead><tr><th>الجهاز</th><th>بلاغات</th><th>التكلفة</th></tr></thead><tbody><tr><td>DEN-412-DU-005</td><td>6</td><td>1,200</td></tr><tr><td>DEN-412-DU-012</td><td>5</td><td>890</td></tr><tr><td>DEN-412-AUT-001</td><td>4</td><td>1,780</td></tr></tbody></table></div></div>
+    <div class="panel"><div class="panel-header"><h3>أنواع الأعطال</h3></div><div class="panel-body flush"><table><thead><tr><th>النوع</th><th>العدد</th><th>التكلفة</th></tr></thead><tbody><tr><td>تسريب مياه</td><td>12</td><td>1,600</td></tr><tr><td>ضعف الشفط</td><td>9</td><td>1,440</td></tr><tr><td>إضاءة</td><td>7</td><td>1,750</td></tr></tbody></table></div></div>
+  </div>
+</section>
+
+<!-- QR REPORT -->
+<section class="module" id="mod-qr-report">
+  <div class="page-header"><div><h2>إبلاغ عطل بمسح QR</h2><p class="subtitle">امسح كود الجهاز بالكاميرا لتسجيل بلاغ سريع</p></div></div>
+  <div class="panel"><div class="panel-body">
+    <div class="stepper" id="report-stepper"><div class="step-item active"><div class="step-num">1</div><div class="step-label">مسح QR</div></div><div class="step-item"><div class="step-num">2</div><div class="step-label">تفاصيل العطل</div></div><div class="step-item"><div class="step-num">3</div><div class="step-label">المُبلِّغ</div></div></div>
+    <div class="report-step" id="rs-1">
+      <div class="qr-scanner-zone" id="scanZone" onclick="startScanner()"><div class="scan-icon"><i data-lucide="scan-line"></i></div><h4>اضغط هنا لفتح الكاميرا ومسح QR</h4><p>يمكن للدكتور أو الفني مسح كود الجهاز المطبوع على المعدة</p></div>
+      <div class="qr-video-container" id="videoContainer"><video id="qr-video" autoplay playsinline></video></div>
+      <div style="text-align:center;margin-top:14px;color:var(--text-tertiary);font-size:0.75rem">أو أدخل الكود يدوياً</div>
+      <div style="max-width:340px;margin:8px auto 0;display:flex;gap:8px"><input type="text" class="form-control" id="manual-code" placeholder="DEN-412-DU-005" style="direction:ltr;text-align:left"><button class="btn btn-primary" onclick="manualAsset()">تأكيد</button></div>
+      <div class="asset-detected" id="assetDetected"><div class="check-icon"><i data-lucide="check"></i></div><div class="det-info"><h5 id="det-name"></h5><p id="det-code"></p></div></div>
+      <div style="text-align:center;margin-top:18px"><button class="btn btn-primary" id="toStep2Btn" style="display:none" onclick="goReportStep(2)">التالي ←</button></div>
+    </div>
+    <div class="report-step" id="rs-2" style="display:none">
+      <div class="form-group"><label>نوع العطل <span class="req">*</span></label><select class="form-control"><option value="">— اختر —</option><option>تسريب مياه أو انسداد</option><option>ضعف أو توقف الشفط</option><option>مشكلة حركة الكرسي</option><option>عطل الإضاءة</option><option>أعطال القبضات</option><option>عطل شاشة التحكم/دواسة</option><option>انقطاع الكهرباء</option><option>تلف مادي</option><option>أخرى</option></select></div>
+      <div class="form-group"><label>الأولوية <span class="req">*</span></label><div class="priority-row"><div class="prio-card pc-critical" onclick="selectPrio(this)"><b>🔴 طارئة</b><small>30 دقيقة</small></div><div class="prio-card pc-high" onclick="selectPrio(this)"><b>🟠 عالية</b><small>4 ساعات</small></div><div class="prio-card pc-medium selected" onclick="selectPrio(this)"><b>🟡 متوسطة</b><small>يوم</small></div><div class="prio-card pc-low" onclick="selectPrio(this)"><b>🟢 منخفضة</b><small>عند الإمكان</small></div></div></div>
+      <div class="form-group"><label>وصف المشكلة <span class="req">*</span></label><textarea class="form-control" rows="3" placeholder="صف المشكلة بالتفصيل..."></textarea></div>
+      <div style="display:flex;gap:8px;margin-top:18px"><button class="btn btn-secondary" onclick="goReportStep(1)">→ السابق</button><button class="btn btn-primary" onclick="goReportStep(3)">التالي ←</button></div>
+    </div>
+    <div class="report-step" id="rs-3" style="display:none">
+      <div class="form-grid"><div class="form-group"><label>اسم المُبلِّغ <span class="req">*</span></label><input type="text" class="form-control" placeholder="الاسم الكامل"></div><div class="form-group"><label>كود الطالب/الموظف <span class="req">*</span></label><input type="text" class="form-control" placeholder="الكود"></div></div>
+      <div class="form-group"><label>البريد (اختياري)</label><input type="email" class="form-control" placeholder="email@fue.edu.eg" style="direction:ltr;text-align:left"></div>
+      <div style="background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px;margin-top:12px"><p style="font-size:0.78rem;color:var(--text-secondary)">ℹ️ سيتم إسناد البلاغ لمدير الصيانة الذي سيحدد المهندس المسؤول.</p></div>
+      <div style="display:flex;gap:8px;margin-top:18px"><button class="btn btn-secondary" onclick="goReportStep(2)">→ السابق</button><button class="btn btn-primary" onclick="submitReport()">✅ إرسال البلاغ</button></div>
+    </div>
+    <div class="report-step" id="rs-success" style="display:none;text-align:center;padding:36px 20px">
+      <div style="width:60px;height:60px;border-radius:50%;background:var(--success-light);margin:0 auto 14px;display:flex;align-items:center;justify-content:center"><i data-lucide="check-circle" style="width:30px;height:30px;color:var(--success)"></i></div>
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:5px">تم تسجيل البلاغ بنجاح</h3>
+      <p style="color:var(--text-tertiary);margin-bottom:18px">سيتم إشعار مدير الصيانة لتعيين المهندس</p>
+      <div style="display:inline-block;background:var(--primary-light);border:2px solid var(--primary);border-radius:var(--radius-md);padding:12px 28px"><div style="font-size:0.7rem;color:var(--text-tertiary)">رقم التذكرة</div><div style="font-size:1.4rem;font-weight:800;color:var(--primary)" id="ticket-num">TKT-049</div></div><br>
+      <button class="btn btn-primary" style="margin-top:18px" onclick="resetReport()">إنشاء بلاغ جديد</button>
+    </div>
+  </div></div>
+</section>
+
+<!-- FAULTS -->
+<section class="module" id="mod-faults">
+  <div class="page-header"><div><h2>بلاغات الأعطال</h2><p class="subtitle">إدارة وتعيين المهندسين</p></div></div>
+  <div class="kpi-row"><div class="kpi c-danger"><div class="kpi-label">مفتوحة</div><div class="kpi-value">3</div></div><div class="kpi c-info"><div class="kpi-label">جارية</div><div class="kpi-value">5</div></div><div class="kpi c-success"><div class="kpi-label">مغلقة</div><div class="kpi-value">45</div></div><div class="kpi"><div class="kpi-label">بانتظار تعيين</div><div class="kpi-value">1</div></div></div>
+  <div class="panel"><div class="panel-header"><h3>البلاغات</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>التذكرة</th><th>الجهاز</th><th>العطل</th><th>الأولوية</th><th>الحالة</th><th>المهندس</th><th>أيام</th><th>إجراء</th></tr></thead><tbody id="faults-tbody"></tbody></table></div></div>
+</section>
+
+<!-- WORK ORDERS -->
+<section class="module" id="mod-workorders">
+  <div class="page-header"><div><h2>أوامر العمل</h2></div></div>
+  <div class="kpi-row"><div class="kpi c-warning"><div class="kpi-label">مفتوحة</div><div class="kpi-value">4</div></div><div class="kpi c-info"><div class="kpi-label">جارية</div><div class="kpi-value">3</div></div><div class="kpi c-success"><div class="kpi-label">مكتملة</div><div class="kpi-value">28</div></div><div class="kpi"><div class="kpi-label">التكلفة</div><div class="kpi-value">6,830</div></div></div>
+  <div class="panel"><div class="panel-header"><h3>أوامر العمل</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>الأمر</th><th>التذكرة</th><th>الجهاز</th><th>المهندس</th><th>الإجراء</th><th>الحالة</th><th>التكلفة</th></tr></thead><tbody id="wo-tbody"></tbody></table></div></div>
+</section>
+
+<!-- PM -->
+<section class="module" id="mod-pm">
+  <div class="page-header"><div><h2>الصيانة الوقائية</h2><p class="subtitle">كراسي: 180 يوم · أوتوكلاف: 90 يوم</p></div></div>
+  <div class="kpi-row"><div class="kpi c-success"><div class="kpi-label">سليمة</div><div class="kpi-value">30</div></div><div class="kpi c-warning"><div class="kpi-label">مستحقة</div><div class="kpi-value">8</div></div><div class="kpi c-danger"><div class="kpi-label">متأخرة</div><div class="kpi-value">5</div></div><div class="kpi"><div class="kpi-label">الامتثال</div><div class="kpi-value">70%</div></div></div>
+  <div class="panel"><div class="panel-header"><h3>جدول PM</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>PM</th><th>الجهاز</th><th>آخر صيانة</th><th>القادمة</th><th>الدورة</th><th>الحالة</th><th>متبقي</th></tr></thead><tbody id="pm-tbody"></tbody></table></div></div>
+</section>
+
+<!-- ASSETS -->
+<section class="module" id="mod-assets">
+  <div class="page-header"><div><h2>سجل الأصول</h2><p class="subtitle">43 جهاز نشط</p></div><button class="btn btn-primary" onclick="openModal('add-asset')"><i data-lucide="plus"></i> إضافة جهاز</button></div>
+  <div class="panel"><div class="panel-header"><h3>الأجهزة</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>الكود</th><th>الاسم</th><th>الفئة</th><th>الموديل</th><th>الحالة</th><th>PM</th></tr></thead><tbody id="assets-tbody"></tbody></table></div></div>
+</section>
+
+<!-- SPARE PARTS -->
+<section class="module" id="mod-spareparts">
+  <div class="page-header"><div><h2>قطع الغيار</h2></div><button class="btn btn-primary" onclick="openModal('add-part')"><i data-lucide="plus"></i> إضافة قطعة</button></div>
+  <div class="kpi-row"><div class="kpi c-primary"><div class="kpi-label">قيمة المخزون</div><div class="kpi-value">18,450</div><div class="kpi-sub">EGP</div></div><div class="kpi c-warning"><div class="kpi-label">إعادة طلب</div><div class="kpi-value">2</div></div><div class="kpi c-danger"><div class="kpi-label">نفد</div><div class="kpi-value">1</div></div></div>
+  <div class="panel"><div class="panel-header"><h3>القطع</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>القطعة</th><th>الرقم</th><th>المورّد</th><th>مبدئي</th><th>مستخدم</th><th>متاح</th><th>حد أدنى</th><th>السعر</th><th>الحالة</th></tr></thead><tbody id="parts-tbody"></tbody></table></div></div>
+</section>
+
+<!-- PURCHASE -->
+<section class="module" id="mod-purchase">
+  <div class="page-header"><div><h2>أوامر الشراء</h2></div></div>
+  <div class="panel"><div class="panel-header"><h3>أوامر الشراء</h3></div><div class="panel-body flush" style="overflow-x:auto"><table><thead><tr><th>PO</th><th>التاريخ</th><th>القطعة</th><th>المورّد</th><th>الكمية</th><th>التكلفة</th><th>الحالة</th><th>التسليم</th></tr></thead><tbody id="po-tbody"></tbody></table></div></div>
+</section>
+
+<!-- ENGINEERS -->
+<section class="module" id="mod-engineers">
+  <div class="page-header"><div><h2>فريق الصيانة</h2></div><button class="btn btn-primary" onclick="openModal('add-engineer')"><i data-lucide="user-plus"></i> إضافة مهندس</button></div>
+  <div class="panel"><div class="panel-header"><h3>الفريق</h3></div><div class="panel-body flush"><table><thead><tr><th>الكود</th><th>الاسم</th><th>المسمى</th><th>الهاتف</th><th>البلاغات</th><th>المغلقة</th><th>الحالة</th></tr></thead><tbody id="eng-tbody"></tbody></table></div></div>
+</section>
+
+<!-- KPI -->
+<section class="module" id="mod-kpi">
+  <div class="page-header"><div><h2>تقييم الأداء</h2><p class="subtitle">6 معايير مرجحة</p></div></div>
+  <div class="panel"><div class="panel-header"><h3>بطاقات الأداء</h3></div><div class="panel-body flush"><table><thead><tr><th>المهندس</th><th>بلاغات</th><th>مغلقة</th><th>%</th><th>حل (يوم)</th><th>عالية</th><th>PM%</th><th>النتيجة</th><th>التقييم</th></tr></thead><tbody>
+    <tr><td><strong>Elsayed Esswi</strong></td><td>28</td><td>26</td><td>93%</td><td>1.8</td><td>4</td><td>85%</td><td><strong>88</strong>/100</td><td><span class="badge b-closed">ممتاز</span></td></tr>
+    <tr><td><strong>Ahmed Gamal</strong></td><td>20</td><td>19</td><td>95%</td><td>2.1</td><td>3</td><td>80%</td><td><strong>82</strong>/100</td><td><span class="badge b-progress">قوي</span></td></tr>
+  </tbody></table></div></div>
+</section>
+
+</main>
+
+<!-- MODALS -->
+<!-- Assign Engineer -->
+<div class="modal-overlay" id="modal-assign"><div class="modal"><div class="modal-head"><h3>🔧 تعيين مهندس</h3><button class="close-btn" onclick="closeModal('assign')">✕</button></div><div class="modal-body">
+  <div style="background:var(--surface-alt);border-radius:var(--radius-md);padding:12px;margin-bottom:14px"><p style="font-size:0.7rem;color:var(--text-tertiary)">بلاغ</p><p style="font-size:0.95rem;font-weight:700" id="assign-ticket">TKT-048</p><p style="font-size:0.78rem;color:var(--text-secondary);margin-top:3px" id="assign-detail">DEN-412-DU-005 · تسريب مياه · طارئة</p></div>
+  <div class="form-group"><label>المهندس / الفني <span class="req">*</span></label><select class="form-control"><option value="">— اختر —</option><option>Elsayed Esswi (ENG-001)</option><option>Ahmed Gamal (ENG-002)</option></select></div>
+  <div class="form-group"><label>الأولوية الزمنية</label><select class="form-control"><option>فوري (ساعة)</option><option>عاجل (4 ساعات)</option><option selected>عادي (يوم عمل)</option></select></div>
+  <div class="form-group"><label>ملاحظات</label><textarea class="form-control" rows="2" placeholder="تعليمات إضافية..."></textarea></div>
+</div><div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('assign');showToast('✅ تم تعيين المهندس بنجاح')">✅ تعيين</button><button class="btn btn-secondary" onclick="closeModal('assign')">إلغاء</button></div></div></div>
+
+<!-- Add Asset -->
+<div class="modal-overlay" id="modal-add-asset"><div class="modal"><div class="modal-head"><h3>➕ إضافة جهاز جديد</h3><button class="close-btn" onclick="closeModal('add-asset')">✕</button></div><div class="modal-body">
+  <div class="form-grid"><div class="form-group"><label>كود الجهاز <span class="req">*</span></label><input type="text" class="form-control" id="f-asset-code" placeholder="DEN-412-DU-041" style="direction:ltr;text-align:left"><small>الصيغة: DEN-412-DU-XXX أو AUT-XXX أو XR-XXX</small></div><div class="form-group"><label>الكود القديم (Legacy)</label><input type="text" class="form-control" id="f-asset-legacy" placeholder="G1" style="direction:ltr;text-align:left"></div></div>
+  <div class="form-grid"><div class="form-group"><label>اسم الجهاز <span class="req">*</span></label><input type="text" class="form-control" id="f-asset-name" placeholder="Dental Unit G1"></div><div class="form-group"><label>الفئة <span class="req">*</span></label><select class="form-control" id="f-asset-cat"><option value="Dental Unit">كرسي طبي</option><option value="Autoclave">أوتوكلاف</option><option value="X-Ray">أشعة</option><option value="RVG">حساس رقمي</option><option value="Compressor">كمبريسور</option><option value="Other">أخرى</option></select></div></div>
+  <div class="form-grid"><div class="form-group"><label>الموديل</label><input type="text" class="form-control" id="f-asset-model" placeholder="Sirona C8+"></div><div class="form-group"><label>الرقم التسلسلي</label><input type="text" class="form-control" id="f-asset-serial" placeholder="SN-XXXXXXXX" style="direction:ltr;text-align:left"></div></div>
+  <div class="form-grid"><div class="form-group"><label>دورة PM (يوم) <span class="req">*</span></label><input type="number" class="form-control" id="f-asset-pm" value="180" min="1"><small>كراسي: 180 · أوتوكلاف: 90 · أشعة: 180</small></div><div class="form-group"><label>الموقع</label><input type="text" class="form-control" id="f-asset-loc" placeholder="عيادة 412 - الصف A"></div></div>
+  <div class="form-grid"><div class="form-group"><label>تاريخ التركيب</label><input type="date" class="form-control" id="f-asset-install"></div><div class="form-group"><label>آخر صيانة وقائية</label><input type="date" class="form-control" id="f-asset-lastpm"></div></div>
+  <div class="form-group"><label>ملاحظات</label><textarea class="form-control" id="f-asset-notes" rows="2" placeholder="ملاحظات إضافية..."></textarea></div>
+</div><div class="modal-footer"><button class="btn btn-primary" onclick="saveAsset()">✅ حفظ الجهاز</button><button class="btn btn-secondary" onclick="closeModal('add-asset')">إلغاء</button></div></div></div>
+
+<!-- Add Spare Part -->
+<div class="modal-overlay" id="modal-add-part"><div class="modal"><div class="modal-head"><h3>🔩 إضافة قطعة غيار</h3><button class="close-btn" onclick="closeModal('add-part')">✕</button></div><div class="modal-body">
+  <div class="form-grid"><div class="form-group"><label>اسم القطعة <span class="req">*</span></label><input type="text" class="form-control" id="f-part-name" placeholder="Handpiece Bearing"></div><div class="form-group"><label>رقم القطعة <span class="req">*</span></label><input type="text" class="form-control" id="f-part-pn" placeholder="HP-BR-002" style="direction:ltr;text-align:left"></div></div>
+  <div class="form-grid"><div class="form-group"><label>المورّد <span class="req">*</span></label><select class="form-control" id="f-part-sup"><option value="">— اختر —</option><option>Sirona</option><option>Cattani</option><option>Melag</option><option>Generic</option><option value="other">أخرى</option></select></div><div class="form-group"><label>اسم المورّد (إذا أخرى)</label><input type="text" class="form-control" id="f-part-sup-other" placeholder="اسم المورّد الجديد"></div></div>
+  <div class="form-grid"><div class="form-group"><label>الكمية المبدئية <span class="req">*</span></label><input type="number" class="form-control" id="f-part-qty" min="0" value="1"></div><div class="form-group"><label>الحد الأدنى (Reorder) <span class="req">*</span></label><input type="number" class="form-control" id="f-part-min" min="0" value="2"><small>تنبيه إعادة طلب عند هذا الرقم</small></div></div>
+  <div class="form-grid"><div class="form-group"><label>سعر الوحدة (EGP) <span class="req">*</span></label><input type="number" class="form-control" id="f-part-cost" min="0" step="0.01" placeholder="450"></div><div class="form-group"><label>فئة الجهاز المرتبطة</label><select class="form-control" id="f-part-cat"><option value="All">كل الأجهزة</option><option value="Dental Unit">كراسي طبية</option><option value="Autoclave">أوتوكلاف</option><option value="X-Ray">أشعة</option></select></div></div>
+  <div class="form-group"><label>موقع التخزين</label><input type="text" class="form-control" id="f-part-loc" placeholder="مخزن الصيانة - رف A3"></div>
+  <div class="form-group"><label>ملاحظات</label><textarea class="form-control" id="f-part-notes" rows="2" placeholder="مواصفات أو بدائل..."></textarea></div>
+</div><div class="modal-footer"><button class="btn btn-primary" onclick="savePart()">✅ حفظ القطعة</button><button class="btn btn-secondary" onclick="closeModal('add-part')">إلغاء</button></div></div></div>
+
+<!-- Add Engineer -->
+<div class="modal-overlay" id="modal-add-engineer"><div class="modal"><div class="modal-head"><h3>👷 إضافة مهندس / فني</h3><button class="close-btn" onclick="closeModal('add-engineer')">✕</button></div><div class="modal-body">
+  <div class="form-grid"><div class="form-group"><label>كود المهندس <span class="req">*</span></label><input type="text" class="form-control" id="f-eng-code" placeholder="ENG-003" style="direction:ltr;text-align:left"><small>الصيغة: ENG-XXX أو TECH-XXX</small></div><div class="form-group"><label>الاسم الكامل <span class="req">*</span></label><input type="text" class="form-control" id="f-eng-name" placeholder="الاسم الثلاثي"></div></div>
+  <div class="form-grid"><div class="form-group"><label>المسمى الوظيفي <span class="req">*</span></label><select class="form-control" id="f-eng-role"><option>مهندس صيانة</option><option>فني صيانة</option><option>فني أجهزة طبية</option><option>مهندس أجهزة طبية</option><option>مشرف صيانة</option></select></div><div class="form-group"><label>التخصص</label><select class="form-control" id="f-eng-spec"><option value="عام">عام (كل الأجهزة)</option><option>كراسي طبية</option><option>أوتوكلاف / تعقيم</option><option>أشعة وتصوير</option><option>كهرباء وتحكم</option><option>هيدروليك ونيوماتيك</option></select></div></div>
+  <div class="form-grid"><div class="form-group"><label>رقم الهاتف <span class="req">*</span></label><input type="tel" class="form-control" id="f-eng-phone" placeholder="01XXXXXXXXX" style="direction:ltr;text-align:left"></div><div class="form-group"><label>البريد الإلكتروني</label><input type="email" class="form-control" id="f-eng-email" placeholder="name@fue.edu.eg" style="direction:ltr;text-align:left"></div></div>
+  <div class="form-grid"><div class="form-group"><label>أيام العمل</label><select class="form-control" id="f-eng-days"><option>أحد - خميس</option><option>سبت - أربعاء</option><option>مناوبات</option><option>حسب الطلب</option></select></div><div class="form-group"><label>تاريخ الالتحاق</label><input type="date" class="form-control" id="f-eng-join"></div></div>
+  <div class="form-group"><label>ملاحظات</label><textarea class="form-control" id="f-eng-notes" rows="2" placeholder="شهادات، خبرات سابقة..."></textarea></div>
+</div><div class="modal-footer"><button class="btn btn-primary" onclick="saveEngineer()">✅ حفظ المهندس</button><button class="btn btn-secondary" onclick="closeModal('add-engineer')">إلغاء</button></div></div></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// NAVIGATION
+document.querySelectorAll('.nav-item').forEach(item=>{item.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));item.classList.add('active');document.getElementById('mod-'+item.dataset.mod).classList.add('active');});});
+
+// MODALS
+function openModal(id){document.getElementById('modal-'+id).classList.add('active')}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('active')}
+document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('active')})});
+
+// TOAST
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+
+// QR SCANNER
+function startScanner(){document.getElementById('scanZone').style.display='none';document.getElementById('videoContainer').style.display='block';if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(stream=>{document.getElementById('qr-video').srcObject=stream;setTimeout(()=>{stream.getTracks().forEach(t=>t.stop());detectAsset('DEN-412-DU-005')},3000)}).catch(()=>{setTimeout(()=>detectAsset('DEN-412-DU-005'),1500)})}else{setTimeout(()=>detectAsset('DEN-412-DU-005'),1500)}}
+function manualAsset(){const c=document.getElementById('manual-code').value.trim().toUpperCase();if(c)detectAsset(c)}
+
+const assetsList=[['DEN-412-DU-001','Dental Unit A1','Dental Unit','Sirona C8+'],['DEN-412-DU-002','Dental Unit A2','Dental Unit','Sirona C8+'],['DEN-412-DU-003','Dental Unit A3','Dental Unit','Sirona C8+'],['DEN-412-DU-004','Dental Unit A4','Dental Unit','Sirona C8+'],['DEN-412-DU-005','Dental Unit A5','Dental Unit','Sirona C8+'],['DEN-412-DU-006','Dental Unit A6','Dental Unit','Sirona C8+'],['DEN-412-DU-007','Dental Unit B1','Dental Unit','Sirona C8+'],['DEN-412-DU-008','Dental Unit B2','Dental Unit','Sirona C8+'],['DEN-412-DU-009','Dental Unit B3','Dental Unit','Sirona C8+'],['DEN-412-DU-010','Dental Unit B4','Dental Unit','Sirona C8+'],['DEN-412-DU-011','Dental Unit B5','Dental Unit','Sirona C8+'],['DEN-412-DU-012','Dental Unit B6','Dental Unit','Sirona C8+'],['DEN-412-DU-013','Dental Unit B7','Dental Unit','Sirona C8+'],['DEN-412-DU-014','Dental Unit C1','Dental Unit','Sirona C8+'],['DEN-412-DU-015','Dental Unit C2','Dental Unit','Sirona C8+'],['DEN-412-DU-016','Dental Unit C3','Dental Unit','Sirona C8+'],['DEN-412-DU-017','Dental Unit C4','Dental Unit','Sirona C8+'],['DEN-412-DU-018','Dental Unit C5','Dental Unit','Sirona C8+'],['DEN-412-DU-019','Dental Unit C6','Dental Unit','Sirona C8+'],['DEN-412-DU-020','Dental Unit C7','Dental Unit','Sirona C8+'],['DEN-412-DU-021','Dental Unit D1','Dental Unit','Sirona C8+'],['DEN-412-DU-022','Dental Unit D2','Dental Unit','Sirona C8+'],['DEN-412-DU-023','Dental Unit D3','Dental Unit','Sirona C8+'],['DEN-412-DU-024','Dental Unit D4','Dental Unit','Sirona C8+'],['DEN-412-DU-025','Dental Unit D5','Dental Unit','Sirona C8+'],['DEN-412-DU-026','Dental Unit D6','Dental Unit','Sirona C8+'],['DEN-412-DU-027','Dental Unit D7','Dental Unit','Sirona C8+'],['DEN-412-DU-028','Dental Unit E1','Dental Unit','Sirona C8+'],['DEN-412-DU-029','Dental Unit E2','Dental Unit','Sirona C8+'],['DEN-412-DU-030','Dental Unit E3','Dental Unit','Sirona C8+'],['DEN-412-DU-031','Dental Unit E4','Dental Unit','Sirona C8+'],['DEN-412-DU-032','Dental Unit E5','Dental Unit','Sirona C8+'],['DEN-412-DU-033','Dental Unit E6','Dental Unit','Sirona C8+'],['DEN-412-DU-034','Dental Unit E7','Dental Unit','Sirona C8+'],['DEN-412-DU-035','Dental Unit F1','Dental Unit','Sirona C8+'],['DEN-412-DU-036','Dental Unit F2','Dental Unit','Sirona C8+'],['DEN-412-DU-037','Dental Unit F3','Dental Unit','Sirona C8+'],['DEN-412-DU-038','Dental Unit F4','Dental Unit','Sirona C8+'],['DEN-412-DU-039','Dental Unit F5','Dental Unit','Sirona C8+'],['DEN-412-DU-040','Dental Unit F6','Dental Unit','Sirona C8+'],['DEN-412-AUT-001','Autoclave A','Autoclave','Melag'],['DEN-412-AUT-002','Autoclave B','Autoclave','Melag'],['DEN-412-XR-001','X-Ray Unit','X-Ray','Heliodent Plus']];
+const assetsDB={};assetsList.forEach(a=>{assetsDB[a[0]]={name:a[1],cat:a[2],model:a[3]}});
+
+function detectAsset(code){document.getElementById('videoContainer').style.display='none';document.getElementById('scanZone').style.display='none';const a=assetsDB[code];document.getElementById('det-name').textContent=a?a.name:code;document.getElementById('det-code').textContent=a?code+' · '+a.model+' · '+a.cat:code;document.getElementById('assetDetected').classList.add('show');document.getElementById('toStep2Btn').style.display='inline-flex';if(typeof lucide!=='undefined')lucide.createIcons()}
+
+// REPORT STEPPER
+function goReportStep(n){document.querySelectorAll('.report-step').forEach(s=>s.style.display='none');document.getElementById('rs-'+n).style.display='block';const steps=document.querySelectorAll('#report-stepper .step-item');steps.forEach((s,i)=>{s.classList.remove('active','done');if(i+1<n)s.classList.add('done');if(i+1===n)s.classList.add('active')})}
+function submitReport(){document.querySelectorAll('.report-step').forEach(s=>s.style.display='none');document.getElementById('rs-success').style.display='block';document.getElementById('report-stepper').style.display='none';document.getElementById('ticket-num').textContent='TKT-'+String(49+Math.floor(Math.random()*50)).padStart(3,'0');if(typeof lucide!=='undefined')lucide.createIcons()}
+function resetReport(){document.getElementById('report-stepper').style.display='flex';document.querySelectorAll('.report-step').forEach(s=>s.style.display='none');document.getElementById('rs-1').style.display='block';document.getElementById('scanZone').style.display='';document.getElementById('assetDetected').classList.remove('show');document.getElementById('toStep2Btn').style.display='none';goReportStep(1)}
+function selectPrio(el){document.querySelectorAll('.prio-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+
+// SAVE FORMS
+function saveAsset(){const c=document.getElementById('f-asset-code').value.trim();const n=document.getElementById('f-asset-name').value.trim();if(!c||!n){showToast('⚠️ أدخل كود الجهاز والاسم');return}showToast('✅ تم حفظ الجهاز: '+c);closeModal('add-asset')}
+function savePart(){const n=document.getElementById('f-part-name').value.trim();const pn=document.getElementById('f-part-pn').value.trim();const cost=document.getElementById('f-part-cost').value;if(!n||!pn||!cost){showToast('⚠️ أدخل اسم القطعة ورقمها وسعرها');return}showToast('✅ تم حفظ القطعة: '+pn);closeModal('add-part')}
+function saveEngineer(){const c=document.getElementById('f-eng-code').value.trim();const n=document.getElementById('f-eng-name').value.trim();const p=document.getElementById('f-eng-phone').value.trim();if(!c||!n||!p){showToast('⚠️ أدخل الكود والاسم والهاتف');return}showToast('✅ تم حفظ المهندس: '+n);closeModal('add-engineer')}
+
+// DATA RENDER
+function renderFaults(){const d=[{id:'TKT-048',a:'DEN-412-DU-005',t:'تسريب مياه',p:'طارئة',s:'مفتوحة',e:'—',days:2,asgn:false},{id:'TKT-047',a:'DEN-412-DU-012',t:'ضعف الشفط',p:'عالية',s:'مفتوحة',e:'Elsayed Esswi',days:3,asgn:true},{id:'TKT-046',a:'DEN-412-AUT-001',t:'فشل تعقيم',p:'عالية',s:'مفتوحة',e:'Ahmed Gamal',days:4,asgn:true},{id:'TKT-045',a:'DEN-412-DU-022',t:'إضاءة',p:'متوسطة',s:'قيد التنفيذ',e:'Ahmed Gamal',days:5,asgn:true},{id:'TKT-044',a:'DEN-412-DU-030',t:'حركة الكرسي',p:'متوسطة',s:'قيد التنفيذ',e:'Elsayed Esswi',days:6,asgn:true},{id:'TKT-043',a:'DEN-412-XR-001',t:'حساس أشعة',p:'عالية',s:'قيد التنفيذ',e:'Ahmed Gamal',days:7,asgn:true},{id:'TKT-042',a:'DEN-412-DU-003',t:'شاشة تحكم',p:'متوسطة',s:'مغلقة',e:'Elsayed Esswi',days:0,asgn:true}];const pm={'طارئة':'b-critical','عالية':'b-high','متوسطة':'b-medium','منخفضة':'b-low'};const sm={'مفتوحة':'b-open','قيد التنفيذ':'b-progress','مغلقة':'b-closed'};document.getElementById('faults-tbody').innerHTML=d.map(f=>`<tr><td><strong>${f.id}</strong></td><td>${f.a}</td><td>${f.t}</td><td><span class="badge ${pm[f.p]}"><span class="badge-dot"></span>${f.p}</span></td><td><span class="badge ${sm[f.s]}"><span class="badge-dot"></span>${f.s}</span></td><td>${f.asgn?f.e:'<span style="color:var(--danger);font-weight:600">⚠ غير معيّن</span>'}</td><td>${f.days>0?f.days+' يوم':'✓'}</td><td>${!f.asgn?'<button class="btn btn-sm btn-primary" onclick="openModal(\'assign\')">تعيين</button>':(f.s!=='مغلقة'?'<button class="btn btn-sm btn-secondary">تحديث</button>':'')}</td></tr>`).join('')}
+
+function renderWO(){const d=[{id:'WO-035',t:'TKT-048',a:'DEN-412-DU-005',e:'بانتظار',act:'فحص الصرف',st:'Open',c:0},{id:'WO-034',t:'TKT-047',a:'DEN-412-DU-012',e:'Elsayed',act:'فحص كمبريسور',st:'In Progress',c:320},{id:'WO-033',t:'TKT-046',a:'DEN-412-AUT-001',e:'Ahmed',act:'فحص حشية',st:'In Progress',c:890},{id:'WO-032',t:'TKT-042',a:'DEN-412-DU-003',e:'Elsayed',act:'فحص كابل',st:'Closed',c:120}];const sc={'Open':'b-open','In Progress':'b-progress','Closed':'b-closed'};const sl={'Open':'مفتوح','In Progress':'جاري','Closed':'مكتمل'};document.getElementById('wo-tbody').innerHTML=d.map(w=>`<tr><td><strong>${w.id}</strong></td><td>${w.t}</td><td>${w.a}</td><td>${w.e}</td><td>${w.act}</td><td><span class="badge ${sc[w.st]}"><span class="badge-dot"></span>${sl[w.st]}</span></td><td>${w.c?w.c+' EGP':'-'}</td></tr>`).join('')}
+
+function renderPM(){const p=[];assetsList.forEach((a,i)=>{const f=a[2]==='Autoclave'?90:180;const o=Math.floor(Math.random()*120);const l=new Date(2026,2,1+o);const n=new Date(l);n.setDate(n.getDate()+f);const left=Math.floor((n-new Date(2026,5,24))/864e5);const s=left>14?'OK':left>0?'Due':'Overdue';p.push({id:'PM-'+String(i+1).padStart(3,'0'),a:a[0],l:l.toISOString().slice(0,10),n:n.toISOString().slice(0,10),f,s,left})});const sc={'OK':'b-ok','Due':'b-due','Overdue':'b-overdue'};const sl={'OK':'سليم','Due':'مستحقة','Overdue':'متأخرة'};document.getElementById('pm-tbody').innerHTML=p.slice(0,15).map(x=>`<tr><td><strong>${x.id}</strong></td><td>${x.a}</td><td>${x.l}</td><td>${x.n}</td><td>${x.f}</td><td><span class="badge ${sc[x.s]}">${sl[x.s]}</span></td><td>${x.left}</td></tr>`).join('')}
+
+function renderAssets(){const c={'Dental Unit':'كرسي طبي','Autoclave':'أوتوكلاف','X-Ray':'أشعة'};document.getElementById('assets-tbody').innerHTML=assetsList.map(a=>`<tr><td><strong>${a[0]}</strong></td><td>${a[1]}</td><td>${c[a[2]]}</td><td>${a[3]}</td><td><span class="badge b-active"><span class="badge-dot"></span>نشط</span></td><td>${a[2]==='Autoclave'?90:180}</td></tr>`).join('')}
+
+function renderParts(){const p=[{n:'Handpiece Bearing',pn:'HP-BR-001',s:'Sirona',i:12,u:4,a:8,m:5,c:450,st:'OK'},{n:'Suction Filter',pn:'SF-202',s:'Cattani',i:30,u:18,a:12,m:10,c:80,st:'OK'},{n:'Light Bulb LED',pn:'LB-LED-12V',s:'Generic',i:8,u:5,a:3,m:5,c:250,st:'Reorder'},{n:'Air Hose',pn:'AH-3M',s:'Sirona',i:4,u:2,a:2,m:3,c:320,st:'Reorder'},{n:'O-Ring Kit',pn:'OR-KIT-A',s:'Generic',i:25,u:12,a:13,m:10,c:60,st:'OK'},{n:'Autoclave Gasket',pn:'AC-GS-MELAG',s:'Melag',i:2,u:2,a:0,m:2,c:890,st:'Out'},{n:'X-Ray Cable',pn:'XR-SC-HP',s:'Sirona',i:1,u:0,a:1,m:1,c:3200,st:'OK'}];const sc={'OK':'b-stock','Reorder':'b-reorder','Out':'b-out'};const sl={'OK':'متوفر','Reorder':'إعادة طلب','Out':'نفد'};document.getElementById('parts-tbody').innerHTML=p.map(x=>`<tr><td><strong>${x.n}</strong></td><td>${x.pn}</td><td>${x.s}</td><td>${x.i}</td><td>${x.u}</td><td>${x.a}</td><td>${x.m}</td><td>${x.c} EGP</td><td><span class="badge ${sc[x.st]}">${sl[x.st]}</span></td></tr>`).join('')}
+
+function renderPO(){const p=[{id:'PO-20260620-001',d:'2026-06-20',pt:'Autoclave Gasket',s:'Melag',q:4,c:3560,st:'Pending',dl:'2026-07-05'},{id:'PO-20260618-002',d:'2026-06-18',pt:'Light Bulb LED',s:'Generic',q:10,c:2500,st:'Ordered',dl:'2026-06-28'},{id:'PO-20260615-003',d:'2026-06-15',pt:'Air Hose',s:'Sirona',q:6,c:1920,st:'Ordered',dl:'2026-06-30'},{id:'PO-20260610-004',d:'2026-06-10',pt:'Suction Filter',s:'Cattani',q:20,c:1600,st:'Delivered',dl:'2026-06-18'}];const sc={'Pending':'b-pending','Ordered':'b-ordered','Delivered':'b-delivered'};const sl={'Pending':'معلّق','Ordered':'تم الطلب','Delivered':'تم التسليم'};document.getElementById('po-tbody').innerHTML=p.map(x=>`<tr><td><strong>${x.id}</strong></td><td>${x.d}</td><td>${x.pt}</td><td>${x.s}</td><td>${x.q}</td><td>${x.c.toLocaleString()} EGP</td><td><span class="badge ${sc[x.st]}">${sl[x.st]}</span></td><td>${x.dl}</td></tr>`).join('')}
+
+function renderEng(){const e=[{c:'ENG-001',n:'Elsayed Esswi',r:'مهندس صيانة',p:'01XXXXXXXX',t:28,cl:26},{c:'ENG-002',n:'Ahmed Gamal',r:'فني صيانة',p:'01XXXXXXXX',t:20,cl:19}];document.getElementById('eng-tbody').innerHTML=e.map(x=>`<tr><td><strong>${x.c}</strong></td><td>${x.n}</td><td>${x.r}</td><td style="direction:ltr">${x.p}</td><td>${x.t}</td><td>${x.cl}</td><td><span class="badge b-active"><span class="badge-dot"></span>نشط</span></td></tr>`).join('')}
+
+// CHARTS
+function initCharts(){const f={family:'Cairo',size:11};const gc='oklch(92% 0.005 260)';
+new Chart(document.getElementById('ch-status'),{type:'doughnut',data:{labels:['مفتوحة','جارية','مغلقة'],datasets:[{data:[3,5,45],backgroundColor:['#e74c3c','#3498db','#27ae60'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:f}}}}});
+new Chart(document.getElementById('ch-pm'),{type:'doughnut',data:{labels:['سليم','مستحقة','متأخرة'],datasets:[{data:[30,8,5],backgroundColor:['#27ae60','#f39c12','#e74c3c'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:f}}}}});
+new Chart(document.getElementById('ch-types'),{type:'bar',data:{labels:['تسريب','شفط','إضاءة','كهرباء','قبضات','كرسي'],datasets:[{data:[12,9,7,6,5,4],backgroundColor:'oklch(45% 0.2 265/0.75)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:f}},y:{grid:{display:false},ticks:{font:f}}}}});
+new Chart(document.getElementById('ch-trend'),{type:'line',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو'],datasets:[{label:'بلاغات',data:[22,18,31,25,38,48],borderColor:'#6366f1',backgroundColor:'oklch(45% 0.2 265/0.08)',fill:true,tension:.4,pointRadius:3},{label:'مغلقة',data:[20,17,28,23,35,45],borderColor:'#27ae60',backgroundColor:'oklch(50% 0.15 155/0.08)',fill:true,tension:.4,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:f}}},scales:{x:{grid:{display:false},ticks:{font:f}},y:{grid:{color:gc},ticks:{font:f}}}}});
+new Chart(document.getElementById('ch-compare'),{type:'bar',data:{labels:['بلاغات','مغلقة','عالية','تكلفة'],datasets:[{label:'الحالية',data:[48,45,7,6830],backgroundColor:'oklch(45% 0.2 265/0.8)',borderRadius:4},{label:'السابقة',data:[38,35,5,4200],backgroundColor:'oklch(70% 0.04 260)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:f}}},scales:{x:{grid:{display:false},ticks:{font:f}},y:{grid:{color:gc},ticks:{font:f}}}}});
+new Chart(document.getElementById('ch-aging'),{type:'bar',data:{labels:['0-2 يوم','3-7 يوم','> 7 يوم'],datasets:[{data:[1,1,1],backgroundColor:['#27ae60','#f39c12','#e74c3c'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:f}},y:{grid:{color:gc},ticks:{font:f,stepSize:1}}}}});
+new Chart(document.getElementById('ch-cost-cat'),{type:'doughnut',data:{labels:['كراسي','أوتوكلاف','أشعة'],datasets:[{data:[4200,1780,850],backgroundColor:['#6366f1','#f59e0b','#06b6d4'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:f}}}}});
+new Chart(document.getElementById('ch-eng-perf'),{type:'bar',data:{labels:['Elsayed','Ahmed'],datasets:[{label:'مسندة',data:[28,20],backgroundColor:'oklch(45% 0.2 265/0.7)',borderRadius:4},{label:'مغلقة',data:[26,19],backgroundColor:'oklch(50% 0.15 155/0.7)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:f}}},scales:{x:{grid:{display:false},ticks:{font:f}},y:{grid:{color:gc},ticks:{font:f}}}}});}
+
+// INIT
+document.addEventListener('DOMContentLoaded',()=>{renderFaults();renderWO();renderPM();renderAssets();renderParts();renderPO();renderEng();initCharts()});
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>document.addEventListener('DOMContentLoaded',()=>lucide.createIcons())</script>
+</body>
+</html>
