@@ -225,6 +225,118 @@ function selectPrio(el,val){document.querySelectorAll('.prio-card').forEach(func
 function submitReport(){var ftype=document.getElementById('rep-ftype').value;var desc=document.getElementById('rep-desc').value.trim();var name=document.getElementById('rep-name').value.trim();if(!ftype||!desc||!name){showToast('أكمل كل الحقول المطلوبة');return}document.getElementById('submitBtn').textContent='جاري الإرسال...';apiPost({action:'addfault',data:{assetCode:detectedAssetCode,faultType:ftype,description:desc,priority:selectedPriority,reporterName:name,reporterCode:document.getElementById('rep-code').value.trim()}},function(j){document.getElementById('submitBtn').textContent='✅ إرسال البلاغ';if(j.status==='success'){document.getElementById('ticket-num').textContent=j.ticketNo;document.querySelectorAll('.report-step').forEach(function(s){s.style.display='none'});document.getElementById('rs-success').style.display='block';document.getElementById('report-stepper').style.display='none';if(typeof lucide!=='undefined')lucide.createIcons();loadAllData()}else{showToast('خطأ: '+j.message)}})}
 function resetReport(){document.getElementById('report-stepper').style.display='flex';document.querySelectorAll('.report-step').forEach(function(s){s.style.display='none'});document.getElementById('rs-1').style.display='block';document.getElementById('scanZone').style.display='';document.getElementById('assetDetected').classList.remove('show');document.getElementById('toStep2Btn').style.display='none';document.getElementById('rep-ftype').value='';document.getElementById('rep-desc').value='';document.getElementById('rep-name').value='';document.getElementById('rep-code').value='';detectedAssetCode='';goReportStep(1)}
 document.addEventListener('DOMContentLoaded',function(){loadAllData()});
+<script>
+// === CLINIC 412 API INTEGRATION ===
+var API_URL = 'https://script.google.com/macros/s/AKfycbwEDp8lnmv68lgEbrGtpCcavqWMad73S1TWgpdWU3SbIhhl6IETfUfW6RjC9mTtWww/exec';
+
+// === 1. AUTO-OPEN QR PAGE WHEN ?unit= IS IN URL ===
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var unit = params.get('unit');
+  if(unit){
+    // Click on QR nav item
+    setTimeout(function(){
+      var navItems = document.querySelectorAll('.nav-item');
+      for(var i=0;i<navItems.length;i++){
+        if(navItems[i].dataset.mod==='qr-report'){
+          navItems[i].click();
+          break;
+        }
+      }
+      // Fill the asset code and detect
+      setTimeout(function(){
+        var input = document.getElementById('manual-code');
+        if(input){input.value=unit;}
+        if(typeof detectAsset==='function'){detectAsset(unit);}
+        else if(typeof manualAsset==='function'){manualAsset();}
+      },500);
+    },800);
+  }
+})();
+
+// === 2. OVERRIDE SAVE FUNCTIONS TO USE API ===
+// Override submitReport to send to Google Sheet
+var _originalSubmitReport = typeof submitReport === 'function' ? submitReport : null;
+submitReport = function(){
+  var ftype = document.getElementById('rep-ftype') ? document.getElementById('rep-ftype').value : (document.querySelector('#rs-2 select') ? document.querySelector('#rs-2 select').value : '');
+  var desc = document.getElementById('rep-desc') ? document.getElementById('rep-desc').value : (document.querySelector('#rs-2 textarea') ? document.querySelector('#rs-2 textarea').value : '');
+  var name = document.getElementById('rep-name') ? document.getElementById('rep-name').value : (document.querySelector('#rs-3 input') ? document.querySelector('#rs-3 input').value : '');
+  var code = typeof detectedAssetCode !== 'undefined' ? detectedAssetCode : (document.getElementById('manual-code') ? document.getElementById('manual-code').value : '');
+  var prio = typeof selectedPriority !== 'undefined' ? selectedPriority : 'متوسطة';
+
+  if(!ftype || !desc || !name){
+    if(typeof showToast==='function') showToast('أكمل كل الحقول المطلوبة');
+    else alert('أكمل كل الحقول المطلوبة');
+    return;
+  }
+
+  fetch(API_URL,{
+    method:'POST',
+    body:JSON.stringify({action:'addfault',data:{assetCode:code,faultType:ftype,description:desc,priority:prio,reporterName:name}}),
+    headers:{'Content-Type':'text/plain;charset=utf-8'}
+  }).then(function(r){return r.json()}).then(function(j){
+    if(j.status==='success'){
+      document.getElementById('ticket-num').textContent=j.ticketNo;
+      if(typeof showToast==='function') showToast('تم تسجيل البلاغ: '+j.ticketNo);
+      // Show success panel
+      document.querySelectorAll('.report-step').forEach(function(s){s.style.display='none'});
+      var success = document.getElementById('rs-success');
+      if(success) success.style.display='block';
+      var stepper = document.getElementById('report-stepper');
+      if(stepper) stepper.style.display='none';
+      if(typeof lucide!=='undefined') lucide.createIcons();
+    } else {
+      if(typeof showToast==='function') showToast('خطأ: '+j.message);
+      else alert('خطأ: '+j.message);
+    }
+  }).catch(function(){
+    if(typeof showToast==='function') showToast('خطأ في الاتصال بالسيرفر');
+    else alert('خطأ في الاتصال');
+  });
+};
+
+// Override saveAsset
+var _originalSaveAsset = typeof saveAsset === 'function' ? saveAsset : null;
+saveAsset = function(){
+  var c = document.getElementById('f-asset-code').value.trim();
+  var n = document.getElementById('f-asset-name').value.trim();
+  if(!c||!n){if(typeof showToast==='function')showToast('أدخل الكود والاسم');return;}
+  fetch(API_URL,{method:'POST',body:JSON.stringify({action:'addasset',data:{code:c,name:n,category:document.getElementById('f-asset-cat')?document.getElementById('f-asset-cat').value:'Dental Unit',model:document.getElementById('f-asset-model')?document.getElementById('f-asset-model').value.trim():'',pmFrequency:document.getElementById('f-asset-pm')?document.getElementById('f-asset-pm').value:'180',legacy:document.getElementById('f-asset-legacy')?document.getElementById('f-asset-legacy').value.trim():''}}),headers:{'Content-Type':'text/plain;charset=utf-8'}}).then(function(r){return r.json()}).then(function(j){if(typeof showToast==='function')showToast(j.status==='success'?'تم: '+j.message:'خطأ: '+j.message);if(typeof closeModal==='function')closeModal('add-asset');}).catch(function(){if(typeof showToast==='function')showToast('خطأ في الاتصال');});
+};
+
+// Override savePart
+var _originalSavePart = typeof savePart === 'function' ? savePart : null;
+savePart = function(){
+  var n = document.getElementById('f-part-name').value.trim();
+  var pn = document.getElementById('f-part-pn').value.trim();
+  var cost = document.getElementById('f-part-cost')?document.getElementById('f-part-cost').value:'';
+  if(!n||!pn||!cost){if(typeof showToast==='function')showToast('أدخل البيانات المطلوبة');return;}
+  fetch(API_URL,{method:'POST',body:JSON.stringify({action:'addpart',data:{name:n,partNumber:pn,supplier:document.getElementById('f-part-sup')?document.getElementById('f-part-sup').value:'Generic',initialQty:document.getElementById('f-part-qty')?document.getElementById('f-part-qty').value:'1',minQty:document.getElementById('f-part-min')?document.getElementById('f-part-min').value:'2',unitCost:cost}}),headers:{'Content-Type':'text/plain;charset=utf-8'}}).then(function(r){return r.json()}).then(function(j){if(typeof showToast==='function')showToast(j.status==='success'?'تم: '+j.message:'خطأ: '+j.message);if(typeof closeModal==='function')closeModal('add-part');}).catch(function(){if(typeof showToast==='function')showToast('خطأ في الاتصال');});
+};
+
+// Override saveEngineer
+var _originalSaveEngineer = typeof saveEngineer === 'function' ? saveEngineer : null;
+saveEngineer = function(){
+  var c = document.getElementById('f-eng-code').value.trim();
+  var n = document.getElementById('f-eng-name').value.trim();
+  if(!c||!n){if(typeof showToast==='function')showToast('أدخل الكود والاسم');return;}
+  fetch(API_URL,{method:'POST',body:JSON.stringify({action:'addengineer',data:{code:c,name:n}}),headers:{'Content-Type':'text/plain;charset=utf-8'}}).then(function(r){return r.json()}).then(function(j){if(typeof showToast==='function')showToast(j.status==='success'?'تم: '+j.message:'خطأ: '+j.message);if(typeof closeModal==='function')closeModal('add-engineer');}).catch(function(){if(typeof showToast==='function')showToast('خطأ في الاتصال');});
+};
+
+// === 3. EXPORT BUTTONS ===
+document.querySelectorAll('.btn').forEach(function(btn){
+  var text = btn.textContent.trim();
+  if(text.indexOf('تصدير')>=0 || text.indexOf('PDF')>=0){
+    btn.addEventListener('click',function(e){
+      e.preventDefault();
+      window.print();
+    });
+  }
+});
+
+console.log('Clinic 412 CMMS: API connected, QR auto-detect enabled, export ready.');
+</script>
+
 </script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>document.addEventListener('DOMContentLoaded',function(){lucide.createIcons()})</script>
